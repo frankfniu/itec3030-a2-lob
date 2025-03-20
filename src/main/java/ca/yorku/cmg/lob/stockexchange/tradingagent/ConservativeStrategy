@@ -1,0 +1,20 @@
+package ca.yorku.cmg.lob.stockexchange.tradingagent;
+
+import ca.yorku.cmg.lob.stockexchange.events.Event;
+
+/**
+ * Conservative trading strategy: reacts cautiously to events.
+ */
+public class ConservativeStrategy implements ITradingStrategy {
+    @Override
+    public void actOnEvent(Event e, int pos, int price) {
+        // Conservative traders buy/sell in small quantities
+        System.out.println("Conservative strategy reacting to event: " + e);
+        int quantity = Math.max(1, pos / 10); // Buy/sell at 10% of position
+        if (e.isGoodNews()) {
+            System.out.println("Buying " + quantity + " shares at price " + price);
+        } else {
+            System.out.println("Selling " + quantity + " shares at price " + price);
+        }
+    }
+}
