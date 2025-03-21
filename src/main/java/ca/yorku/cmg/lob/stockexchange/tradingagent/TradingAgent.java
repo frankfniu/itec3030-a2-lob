@@ -23,15 +23,22 @@ public abstract class TradingAgent {
 		this.t=t;
 		this.exc = e;
 		this.news = n;
+
+	        // Register as an observer (Push Model)
+        	this.news.addObserver(this);
 	}
-	
-	/**
-	 * Method to be called as time advances to {@code time}. In response the TradingAgent will poll the NewsBoard for events.
-	 * @param time The time to advance to.
-	 */
-	public void timeAdvancedTo(long time) {
-		pollForEvents(time);
-	}
+
+
+
+	 /**
+	     * Observer method: Called when an event occurs.
+	     * @param e The Event received from NewsBoard.
+    	 */
+   	 @Override
+  	  public void update(Event e) {
+        	examineEvent(e); // Process the event when notified
+   	 }
+
 
 	/**
 	 * Examine if an event is relevant for the Agent, i.e., if the Agent has a position on it.
@@ -44,19 +51,7 @@ public abstract class TradingAgent {
 		}
 	}
 
-	
-	/**
-	 * Check into the {@linkplain NewsBoard} if there are any events at time {@code time}. If there is one (it assumes only one event at a time), send it for examination.
-	 * @param time The time for which to poll for events. Unit is days.
-	 */
-	private void pollForEvents(long time) {
-		Event e = news.getEventAt(time);
-		if (e!=null) {
-			examineEvent(e);
-		}
 
-	}
-	
 	
 	/**
 	 * Act in response to a news {@linkplain Event}. Exact reaction strategy to be implemented by specialized agents.
